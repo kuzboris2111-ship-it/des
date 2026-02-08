@@ -10,11 +10,6 @@
         }
       }
     </script>
-    <style type="text/css">
-      canvas {
-        border: 1px solid black;
-      }
-    </style>
   </head>
 <body>
     <h2>Desk</h2>
@@ -34,7 +29,6 @@
             ctx.beginPath();
         };
 
-
         canvas.onmousemove = (f) => {
             if (!painting) return;
             ctx.lineTo(f.offsetX, f.offsetY);
@@ -43,7 +37,5 @@
 
         canvas.onmouseup = () => painting = false;
 </script>
-</body>
-</html>
 </body>
 </html>
