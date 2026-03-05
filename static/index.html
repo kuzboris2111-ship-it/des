@@ -3,12 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Departments</title>
+    <link rel="stylesheet" href="css/styleforindex.css">
 </head>
 <body>
-    <h1>Отделы:</h1>
-    <ul>
-        <li><a href="mysite.html?depart=1">Отдел разработки</a></li>
-        <li><a href="mysite.html?depart=2">Отдел маркетинга</a></li>
-    </ul>
+    <div class="form-floating">
+        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+   </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+        <label >Password</label>
+    </div>
+    <button >Sign up</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io({
+        auth: {
+        token: localStorage.getItem("token")
+    }
+});</script>
 </body>
 </html>
