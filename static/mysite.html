@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>dep</title>
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-
+    <title>Canvas tutorial</title>
+    <script type="text/javascript">
+      function draw() {
+        const canvas = document.getElementById("tutorial");
+        if (canvas.getContext) {
+          const ctx = canvas.getContext("2d");
+        }
+      }
+    </script>
   </head>
 <body>
     <h2>Desk</h2>
@@ -13,6 +19,10 @@
     <button onclick="ctx.clearRect(0,0,800,500)">Очистить</button>
 
     <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let painting = false;
+
 
         canvas.onmousedown = () => {
             painting = true;
@@ -23,24 +33,9 @@
             if (!painting) return;
             ctx.lineTo(f.offsetX, f.offsetY);
             ctx.stroke();
-            socket.emit('draw', {
-            departmentId: departmentId,
-            x: f.offsetX,
-            y: f.offsetY
-        });
         };
 
         canvas.onmouseup = () => painting = false;
-        // Слушаем, что рисуют другие
-        socket.on('draw', (data) => {
-        if (data.departmentId === departmentId) {
-            ctx.lineTo(data.x, data.y);
-            ctx.stroke();
-        }
-        });
-
-
-        }
 </script>
 </body>
 </html>

@@ -17,6 +17,7 @@ const PORT = 3000
 //    res.sendFile(path.join(__dirname, '../static/index.html'));
 //});
 app.use(express.json())
+app.use('/static', express.static(path.join(__dirname, '../static')))
 app.use('/auth', authRouter)
 //проверка подключений
 let connections = [];
@@ -32,11 +33,13 @@ io.on("connection", (socket) => {
 const start=async()=>{
     try{
         await mongoose.connect('mongodb://127.0.0.1:27017/orgaspace')
-        app.listen(PORT,()=>console .log(`Для общего пользования по WIFI: http://192.168.0.192:${PORT}`))
         app.listen(PORT, ()=>console.log(`Для ноутбука:http://localhost:${PORT}`))
     }
     catch(err){
         console.log(err)
     }
 }
+app.get('/', (req, res) => {
+    res.redirect('/static/register.html');
+});
 start()
