@@ -15,18 +15,18 @@ const generatetoken=(id,roles)=>{
 
 
 
-
 class authController{
+    //регистрация
     async registration(req,res){
         try{
             const errors=validationResult(req)
             if(!errors.isEmpty()){
-                return res.status(400).json({message:'Registration12 error'})
+                return res.status(400).json({message:'Registration11 error'})
             }
             const {username, password}=req.body
             const candidate=User.findOne({username})
             if(!candidate){
-                return res.status(400).json({message:'Registration1 error'})
+                return res.status(400).json({message:'Registration12 error'})
             }
             const hash = bcrypt.hashSync(password, 7);
             const userRole=await Role.findOne({value:'user'})
@@ -35,20 +35,21 @@ class authController{
             return res.json({message:"ALL OK"})
         }
         catch(err){
-            console.log("ddsdc",err)
-            res.status(400).json({message:'Registration error'})
+            res.status(400).json({message:'Registration1 error'})
         }
     }
+
+    //вход
     async login(req,res){
         try{
             const{username, password}=req.body
             const user=await User.findOne({username})
             if(!user){
-                return res.status(400).json({message:'Registration1 error'})
+                return res.status(400).json({message:'Registration21 error'})
             }
             const validpas= bcrypt.compareSync(password, user.password)
             if(!validpas){
-                return res.status(400).json({message:'Registration2 error'})
+                return res.status(400).json({message:'Registration22 error'})
             }
             const token=generatetoken(user._id,user.roles)
             return res.json({token})
@@ -58,6 +59,8 @@ class authController{
             res.status(400).json({message:'Login error'})
         }
     }
+
+    //роли пользователей
     async getUs(req,res){
         try{
             const userRole=new Role()

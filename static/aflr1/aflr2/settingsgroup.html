@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Дерево папок</title>
+    <style>
+        .folder {
+            margin-left: 20px;
+        }
+        .folder-header {
+            cursor: pointer;
+        }
+        .arrow {
+            display: inline-block;
+            width: 20px;
+        }
+        .children {
+            margin-left: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+        .add-form {
+            margin: 20px 0;
+            padding: 15px;
+            background: #f0f0f0;
+            border: 1px solid #ccc;
+        }
+        input, select, button {
+            margin: 5px;
+            padding: 5px;
+        }
+        .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+}
+    </style>
+</head>
+<body>
+    <h2>Мои папки</h2>
+    <div id="tree-container"></div>
+
+<div id="myModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border:1px solid black; z-index:1000;">
+    <form id="addForm">
+    <input type="text" id="folder-name" placeholder="Название" required>
+    <select id="parent-id"></select>
+    <button type="submit">+Add</button>
+    </form>
+</div>
+<button id="showModalBtn" style="margin:20px;">+ Новая папка</button>
+
+    <script src="/static/js/settings.js"></script>
+</body>
+</html>

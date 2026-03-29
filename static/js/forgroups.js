@@ -1,3 +1,6 @@
+//логика подключений к группу
+
+
 function sendData(url, data, successCallback, errorCallback) {
     const XHR = new XMLHttpRequest();
     XHR.addEventListener("load", function(event) {
@@ -18,45 +21,50 @@ function sendData(url, data, successCallback, errorCallback) {
 
 window.addEventListener("load", function() {
 //регистрация уже на прямую берем
-    const regForm = document.getElementById("registerForm");
+    const regForm = document.getElementById("regForm");
     if (regForm) {
         regForm.addEventListener("submit", function(event) {
             event.preventDefault();
-            const username = document.getElementById("regUsername").value;
+            const groupname = document.getElementById("regUsername").value;
             const password = document.getElementById("regPassword").value;
 
-            if (!username || !password) {
-                alert("Заполните все поля");
-                return;
+            if (!groupname || !password) {
+                alert("Заполните все поля")
+                return
             }
-            sendData('/auth/registration', 
-                { username, password },
+            sendData('/groups/registration',
+                { groupname, password, Admins:[], Users:[] },
                 function(response) {
 
                     alert(response.message || "Регистрация успешна");
                     if(response.message==="ALL OK"){
-                        window.location.href = "/static/mainpage.html";
+
+
+                        window.location.href = "/static/aflr1/aflr2/settingsgroup.html";
                     }
                 },
                 function(error) {
                     alert(error);
                 }
-            );
-        });
+            )
+
+        })
     }
+})
 //вход в аккаунт
+/*
     const loginForm = document.getElementById("loginForm");
     if (loginForm) {
         loginForm.addEventListener("submit", function(event) {
             event.preventDefault();
             const username = document.getElementById("loginUsername").value;
             const password = document.getElementById("loginPassword").value;
-            
+
             if (!username || !password) {
                 alert("Заполните все поля");
                 return;
             }
-            sendData('/auth/login', 
+            sendData('/auth/login',
                 { username, password },
                 function(response) {
                     if (response.token) {
@@ -74,3 +82,4 @@ window.addEventListener("load", function() {
         });
     }
 });
+*/
