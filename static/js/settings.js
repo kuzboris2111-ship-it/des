@@ -1,5 +1,6 @@
-        let data=[
-]
+const groupId = new URLSearchParams(window.location.search).get('groupId')
+let data=[{id:1, name:"Main Folder", parentId:null},
+           {id:2, name:"Main1 Folder", parentId:null} ]
         //перестройка в дерево
         function buildTree(){
             let map = {}
@@ -10,7 +11,8 @@
             for (let j =0; j<data.length; j++){
                 if (data[j].parentId === null) {
                     folders.push(map[data[j].id])
-                } else {
+                }
+                else {
                     const parent = map[data[j].parentId]
                     if (parent) {
                         parent.children.push(map[data[j].id])
@@ -19,8 +21,67 @@
             }
             return folders
         }
-        // созданеие дерева
+const menu = document.createElement('div')
+menu.style.position = 'absolute'
+menu.style.backgroundColor = 'white'
+menu.style.border = '1px solid #ccc'
+menu.style.borderRadius = '4px'
+menu.style.padding = '5px'
+menu.style.display = 'none'
+menu.style.zIndex = '1000'
+
+const addBtn = document.createElement('button')
+addBtn.textContent = '➕ Добавить'
+addBtn.style.display = 'block'
+addBtn.style.width = '100%'
+addBtn.style.margin = '2px 0'
+addBtn.style.padding = '5px'
+
+const deleteBtn = document.createElement('button')
+deleteBtn.textContent = '🗑️ Удалить'
+deleteBtn.style.display = 'block'
+deleteBtn.style.width = '100%'
+deleteBtn.style.margin = '2px 0'
+deleteBtn.style.padding = '5px'
+
+menu.appendChild(addBtn)
+menu.appendChild(deleteBtn)
+document.body.appendChild(menu)
+
+let currentFolderId = null
+
+
+addBtn.onclick = () => {
+    document.getElementById('myModal').style.display = 'block'
+
+
+    }
+    const form = document.getElementById('addForm')
+    form.addEventListener('submit', (e) => {
+        e.preventDefault()
+        const name = document.getElementById('folder-name').value
+        const parentId = currentFolderId
+        createFolder(groupId, name, parentId === 'null' ? null : parentId)
+        document.getElementById('myModal').style.display = 'none'
+        form.reset()
+    })
+/*
+deleteBtn.onclick = () => {
+    if (currentFolderId) {
+        deleteFolder(groupId, currentFolderId)
+    }
+    menu.style.display = 'none'
+}*/
+
+document.addEventListener('click', (e) => {
+    if (!menu.contains(e.target)) {
+        menu.style.display = 'none'
+    }
+
+})
+        // создание дерева
         function renderTree(tree){
+        console.log('renderTree вызван, tree.length:', tree.length)
             const container = document.createElement('div')
             for (let i=0; i<tree.length;i++){
                 let folder=tree[i]
@@ -35,73 +96,113 @@
 
                 header.appendChild(arrow)
                 header.appendChild(nameSpan)
+                header.className = 'folder-header'
                 fol.appendChild(header)
 
                 const childrenContainer = document.createElement('div')
                 childrenContainer.style.marginLeft = '20px'
                 childrenContainer.style.display = 'none'
-
-            if (folder.children && folder.children.length > 0) {
-                const childrenTree = renderTree(folder.children)
-                childrenContainer.appendChild(childrenTree)
                 fol.appendChild(childrenContainer)
-            }
-            arrow.addEventListener('click', function() {
-            if (childrenContainer.style.display === 'none') {
-                childrenContainer.style.display = 'block'
-                arrow.textContent = '⋎ '
-            } else {
-                childrenContainer.style.display = 'none'
-                arrow.textContent = '≻ '
-            }
-        })
-        container.appendChild(fol)
-    }
+                if (folder.children && folder.children.length > 0) {
+                    const childrenTree = renderTree(folder.children)
+                    childrenContainer.appendChild(childrenTree)
+                }
 
-    return container
-            }
+//================================================================
+                header.addEventListener('click', (e)=>{
+                    e.stopPropagation()
+                    currentFolderId = folder.id
+
+                    document.querySelectorAll('.folder-header').forEach(i => {
+                        i.style.backgroundColor = ''
+                    })
+
+                    menu.style.display='block'
+                    menu.style.left = e.pageX + 'px'
+                    menu.style.top = e.pageY + 'px'
+
+                    header.style.backgroundColor = 'rgba(255,217,102,0.2)'
+                })
+//-----------------------------------------------------------------
+
+                arrow.addEventListener('click', function(e) {
+                    e.stopPropagation()
+                if (childrenContainer.style.display === 'none') {
+                    childrenContainer.style.display = 'block'
+                    arrow.textContent = '⋎ '
+                }
+                else {
+                    childrenContainer.style.display = 'none'
+                    arrow.textContent = '≻ '
+                }
+                })
+
+                container.appendChild(fol)
+                }
+
+return container
+}
+
+
     //добавление имени
     function addFolder(name, parentId){
         const newId=String(Date.now())//различные айди
         data.push({ id: newId, name: name, parentId: parentId })
         refreshTree()
     }
+
+
     function refreshTree() {
     const container = document.getElementById('tree-container')
     container.innerHTML = ''
     const tree = buildTree()
     container.appendChild(renderTree(tree))
-    updateParentSelect()
-    document.getElementById('myModal').style.display = 'none'
 }
-    function setupForm() {
-    const form = document.getElementById('addForm')
-    form.addEventListener('submit', (e) => {
-        e.preventDefault()
-        const name = document.getElementById('folder-name').value
-        const parentId = document.getElementById('parent-id').value
-        addFolder(name, parentId === 'null' ? null : parentId)
-        form.reset()
-    })
+
+
+
+
+
+async function loadFolders(groupId) {
+    const res = await fetch(`/groups/${groupId}/folders`)
+    const folders = await res.json()
+    if (Array.isArray(folders) && folders.length > 0) {
+        data = folders
+    } else {
+        data = [{id: 1, name: "Main Folder", parentId: null}]
     }
-    // Обновление списка родителей
-function updateParentSelect() {
-    const select = document.getElementById('parent-id')
-    select.innerHTML = '<option value="null">Корень</option>'
-    data.forEach(folder => {
-        const option = document.createElement('option')
-        option.value = folder.id
-        option.textContent = folder.name
-        select.appendChild(option)
-    })
-}
-
-// Показать окно
-document.getElementById('showModalBtn').onclick = () => {
-    document.getElementById('myModal').style.display = 'block'
-    updateParentSelect()
-}
-
-
-    setupForm()
     refreshTree()
+}
+async function createFolder(groupId,name, parentId) {
+    const res = await fetch('/groups/folder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ groupId, name, parentId })
+    })
+    const newFolder = await res.json()
+    data.push(newFolder)
+    refreshTree()
+}
+async function deleteFolder(groupId,folderId) {
+    await fetch('/groups/folder', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ groupId, folderId })
+    })
+    loadFolders()
+}
+async function renameFolder(groupId, folderId, newName) {
+    await fetch('/groups/folder', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ groupId, folderId, name: newName })
+    })
+    loadFolders()
+}
+
+if (groupId) {
+    loadFolders(groupId)
+} else {
+  refreshTree()
+}
+console.log(data)

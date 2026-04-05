@@ -11,5 +11,8 @@ router.post('/registration', [
 
 router.post('/login', groupContrl.login)
 
-
+router.post('/folder', groupContrl.createFolder)
+router.delete('/folder', groupContrl.deleteFolders)
+router.get('/:groupId/folders', groupContrl.getFolders)
+router.put('/folder', groupContrl.updateFolders)
 module.exports=router

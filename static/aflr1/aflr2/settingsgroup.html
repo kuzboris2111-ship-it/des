@@ -40,20 +40,24 @@
     z-index: 999;
 }
     </style>
+
 </head>
 <body>
     <h2>Мои папки</h2>
     <div id="tree-container"></div>
+<div id="folderMenu" style="display: none; position: absolute; background: white; border: 1px solid #ccc;">
+    <button id="addFolderBtn">+ Добавить папку</button>
+    <button id="deleteFolderBtn">🗑 Удалить</button>
+    <button id="renameFolderBtn">✏️ Переименовать</button>
+</div>
 
 <div id="myModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border:1px solid black; z-index:1000;">
     <form id="addForm">
     <input type="text" id="folder-name" placeholder="Название" required>
-    <select id="parent-id"></select>
     <button type="submit">+Add</button>
     </form>
 </div>
-<button id="showModalBtn" style="margin:20px;">+ Новая папка</button>
-
+    <button id="creator" style=" margin:20px" type="click"> Create Group</button>
     <script src="/static/js/settings.js"></script>
 </body>
 </html>

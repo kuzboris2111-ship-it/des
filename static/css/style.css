@@ -1,0 +1,76 @@
+/* styles.css - для страницы регистрации */
+
+body {
+    background: linear-gradient(135deg, #0a1f1a 0%, #1a2f28 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.register-card {
+    background: rgba(10, 31, 26, 0.95);
+    backdrop-filter: blur(10px);
+    border: 1px solid #ffd966;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.register-card:hover {
+    transform: translateY(-5px);
+}
+
+.uk-input {
+    background: rgba(30, 60, 50, 0.9);
+    border: 1px solid #ffd966;
+    color: #ffd966;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.uk-input:focus {
+    border-color: #ffaa33;
+    outline: none;
+    box-shadow: 0 0 15px rgba(255,217,102,0.5);
+    background: rgba(20, 50, 40, 0.95);
+    color: #ffe08a;
+}
+
+.uk-input::placeholder {
+    color: rgba(255,217,102,0.5);
+    font-weight: normal;
+}
+
+.uk-button-primary {
+    background: #ffd966;
+    color: #0a1f1a;
+    font-weight: bold;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.uk-button-primary:hover {
+    background: #ffcd33;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255,217,102,0.4);
+}
+
+.uk-text-primary {
+    color: #ffd966 !important;
+    font-weight: bold;
+}
+
+.uk-link-text {
+    color: #ffd966;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.uk-link-text:hover {
+    color: #ffcd33;
+    text-decoration: underline;
+}
+
+.uk-card-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+}

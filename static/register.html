@@ -2,19 +2,37 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Регистрация</title>
+    <title>Регистрация | WorkTree</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.23.0/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="/static/css/styles.css" />
 </head>
-<body>
-    <h2>Регистрация</h2>
-    <form id="registerForm">
-        <input type="text" id="regUsername" placeholder="Имя пользователя" required>
-        <br>
-        <input type="password" id="regPassword" placeholder="Пароль" required>
-        <br>
-        <button type="submit">Зарегистрироваться</button>
-    </form>
-    <p><a href="login.html">Уже есть аккаунт? Войти</a></p>
+<body class="uk-flex uk-flex-center uk-flex-middle" style="min-height: 100vh;">
 
+    <div class="uk-card register-card uk-card-body uk-width-1-2 uk-width-1-3@m uk-border-rounded">
+
+        <h2 class="uk-card-title uk-text-center uk-text-primary">✨ Регистрация</h2>
+
+        <form id="registerForm">
+            <div class="uk-margin">
+                <input type="text" id="regUsername" class="uk-input uk-form-large" placeholder="Имя пользователя" required>
+            </div>
+
+            <div class="uk-margin">
+                <input type="password" id="regPassword" class="uk-input uk-form-large" placeholder="Пароль" required>
+            </div>
+
+            <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-button-large uk-margin-top">
+                Зарегистрироваться
+            </button>
+        </form>
+
+        <p class="uk-text-center uk-margin-top">
+            <a href="login.html" class="uk-link-text">🔑 Уже есть аккаунт? Войти</a>
+        </p>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.23.0/dist/js/uikit.min.js"></script>
     <script src="/static/js/auth.js"></script>
 </body>
 </html>

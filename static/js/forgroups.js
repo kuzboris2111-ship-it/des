@@ -40,7 +40,8 @@ window.addEventListener("load", function() {
                     if(response.message==="ALL OK"){
 
 
-                        window.location.href = "/static/aflr1/aflr2/settingsgroup.html";
+                        window.location.href = "/static/aflr1/aflr2/settingsgroup.html?groupId=" + response.groupId
+
                     }
                 },
                 function(error) {

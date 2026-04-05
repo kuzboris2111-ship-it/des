@@ -1,0 +1,206 @@
+🎨 Сводка цветов в CSS
+Цвет	Hex-код	За что отвечает
+Темно-зеленый	#0a1f1a	Основной фон body (верхний градиент)
+Темно-зеленый светлее	#1a2f28	Фон body (нижний градиент)
+Фон карточки	rgba(10, 31, 26, 0.95)	Фон регистрационной карточки с прозрачностью
+Золотой (основной)	#ffd966	Рамка карточки, текст заголовка, рамка полей ввода, цвет ссылок, кнопка
+Золотой (темнее)	#ffcd33	Цвет кнопки при наведении
+Золотой (ярче)	#ffe08a	Цвет текста в поле ввода при фокусе
+Золотой (полупрозрачный)	rgba(255,217,102,0.5)	Цвет placeholder в полях ввода
+Золотой (оранжевый)	#ffaa33	Рамка поля ввода при фокусе
+Темный фон поля	rgba(30, 60, 50, 0.9)	Фон поля ввода
+Темный фон при фокусе	rgba(20, 50, 40, 0.95)	Фон поля ввода при фокусе
+Тень свечения	rgba(255,217,102, 0.4)	Тень кнопки при наведении
+Тень свечения поля	rgba(255,217,102, 0.5)	Тень поля ввода при фокусе
+📝 Общая гамма:
+Темно-зеленый — фон (глубокий, спокойный)
+
+Золотой — акценты (кнопки, рамки, важный текст)
+
+так а ты можешь сделать class все которые есть и расписать что они деклают
+📚 Все классы UIKit с описанием
+Типографика
+Класс	Что делает
+.uk-h1, .uk-h2, .uk-h3, .uk-h4	Стили заголовков (как h1-h4)
+.uk-text-lead	Ведущий текст (крупнее обычного)
+.uk-text-meta	Мелкий серый текст
+.uk-text-small	Маленький текст
+.uk-text-large	Крупный текст
+.uk-text-light	Тонкий текст
+.uk-text-bold	Жирный текст
+.uk-text-lighter	Очень тонкий текст
+.uk-text-italic	Курсив
+.uk-text-capitalize	Первая буква заглавная
+.uk-text-uppercase	Все буквы заглавные
+.uk-text-lowercase	Все буквы строчные
+.uk-text-muted	Серый текст
+.uk-text-primary	Основной цвет
+.uk-text-danger	Красный (опасность/ошибка)
+.uk-text-center	Выравнивание по центру
+.uk-text-left	Выравнивание по левому краю
+.uk-text-right	Выравнивание по правому краю
+.uk-text-nowrap	Без переноса строки
+.uk-text-truncate	Обрезать текст с многоточием
+Кнопки
+Класс	Что делает
+.uk-button	Базовая кнопка
+.uk-button-default	Серая кнопка
+.uk-button-primary	Синяя (основная) кнопка
+.uk-button-secondary	Темная кнопка
+.uk-button-danger	Красная кнопка
+.uk-button-text	Кнопка как текст
+.uk-button-link	Кнопка как ссылка
+.uk-button-small	Маленькая кнопка
+.uk-button-large	Большая кнопка
+.uk-button-disabled	Неактивная кнопка
+Формы и поля ввода
+Класс	Что делает
+.uk-input	Текстовое поле
+.uk-textarea	Текстовая область
+.uk-select	Выпадающий список
+.uk-checkbox	Чекбокс
+.uk-radio	Радиокнопка
+.uk-range	Ползунок
+.uk-form-stacked	Метка над полем
+.uk-form-horizontal	Метка слева от поля
+.uk-form-small	Маленькое поле
+.uk-form-large	Большое поле
+.uk-form-width-small	Маленькая ширина
+.uk-form-width-medium	Средняя ширина
+.uk-form-width-large	Большая ширина
+Флекс-сетка
+Класс	Что делает
+.uk-flex	Включить флекс
+.uk-flex-inline	Инлайн-флекс
+.uk-flex-left	Горизонтальное выравнивание влево
+.uk-flex-center	Горизонтальное выравнивание по центру
+.uk-flex-right	Горизонтальное выравнивание вправо
+.uk-flex-between	Распределение пространства между элементами
+.uk-flex-around	Распределение пространства вокруг элементов
+.uk-flex-row	Направление по горизонтали
+.uk-flex-column	Направление по вертикали
+.uk-flex-wrap	Перенос строк
+.uk-flex-nowrap	Без переноса
+.uk-flex-top	Выравнивание по верху
+.uk-flex-middle	Выравнивание по центру вертикали
+.uk-flex-bottom	Выравнивание по низу
+Сетка (Grid)
+Класс	Что делает
+.uk-grid	Включить сетку
+.uk-grid-small	Маленькое расстояние между элементами
+.uk-grid-medium	Среднее расстояние
+.uk-grid-large	Большое расстояние
+.uk-child-width-1-2	Дочерние элементы по 50% ширины
+.uk-child-width-1-3	Дочерние элементы по 33.3%
+.uk-child-width-1-4	Дочерние элементы по 25%
+.uk-child-width-auto	Автоширина
+.uk-child-width-expand	Растянуть на всё свободное место
+.uk-width-1-2	Ширина 50%
+.uk-width-1-3	Ширина 33.3%
+.uk-width-1-4	Ширина 25%
+.uk-width-auto	Автоширина
+.uk-width-expand	Растянуть
+Отступы (Margin)
+Класс	Что делает
+.uk-margin	Стандартный отступ снизу
+.uk-margin-small	Маленький отступ снизу
+.uk-margin-medium	Средний отступ снизу
+.uk-margin-large	Большой отступ снизу
+.uk-margin-xlarge	Очень большой отступ снизу
+.uk-margin-top	Отступ сверху
+.uk-margin-bottom	Отступ снизу
+.uk-margin-left	Отступ слева
+.uk-margin-right	Отступ справа
+.uk-margin-remove	Убрать все отступы
+.uk-margin-remove-top	Убрать отступ сверху
+.uk-margin-remove-bottom	Убрать отступ снизу
+Внутренние отступы (Padding)
+Класс	Что делает
+.uk-padding	Стандартный внутренний отступ
+.uk-padding-small	Маленький внутренний отступ
+.uk-padding-large	Большой внутренний отступ
+.uk-padding-remove	Убрать внутренние отступы
+.uk-padding-remove-top	Убрать отступ сверху
+.uk-padding-remove-bottom	Убрать отступ снизу
+Фоны
+Класс	Что делает
+.uk-background-default	Фон по умолчанию
+.uk-background-muted	Приглушенный фон
+.uk-background-primary	Основной цвет фона
+.uk-background-secondary	Вторичный цвет фона
+.uk-background-cover	Фон покрывает весь блок
+.uk-background-contain	Фон вписывается в блок
+.uk-background-norepeat	Без повторения фона
+.uk-background-fixed	Фиксированный фон
+Панели и карточки
+Класс	Что делает
+.uk-panel	Панель с отступами
+.uk-card	Карточка
+.uk-card-body	Внутренность карточки
+.uk-card-header	Верх карточки
+.uk-card-footer	Низ карточки
+.uk-card-default	Стандартная карточка
+.uk-card-primary	Карточка с основным цветом
+.uk-card-secondary	Карточка с вторичным цветом
+.uk-card-hover	Карточка с анимацией при наведении
+.uk-card-small	Маленькая карточка
+.uk-card-large	Большая карточка
+Позиционирование
+Класс	Что делает
+.uk-position-relative	Относительное позиционирование
+.uk-position-absolute	Абсолютное позиционирование
+.uk-position-fixed	Фиксированное позиционирование
+.uk-position-top	Прижать к верху
+.uk-position-bottom	Прижать к низу
+.uk-position-left	Прижать к левому краю
+.uk-position-right	Прижать к правому краю
+.uk-position-center	По центру
+.uk-position-cover	Растянуть на весь родитель
+Утилиты
+Класс	Что делает
+.uk-float-left	Плавающий элемент влево
+.uk-float-right	Плавающий элемент вправо
+.uk-clearfix	Очистка float
+.uk-hidden	Скрыть элемент
+.uk-visible	Показать элемент
+.uk-invisible	Невидимый (но место занимает)
+.uk-display-block	Блочный элемент
+.uk-display-inline-block	Инлайн-блок
+.uk-display-inline	Инлайн элемент
+.uk-border-rounded	Скругленные углы
+.uk-border-circle	Круглая форма
+.uk-border-pill	Форма таблетки
+.uk-box-shadow-small	Маленькая тень
+.uk-box-shadow-medium	Средняя тень
+.uk-box-shadow-large	Большая тень
+.uk-overflow-hidden	Скрыть переполнение
+.uk-overflow-auto	Скролл при переполнении
+.uk-overflow-scroll	Всегда показывать скролл
+Анимация
+Класс	Что делает
+.uk-animation-fade	Появление с прозрачностью
+.uk-animation-scale-up	Увеличение
+.uk-animation-scale-down	Уменьшение
+.uk-animation-slide-left	Сдвиг слева
+.uk-animation-slide-right	Сдвиг справа
+.uk-animation-slide-top	Сдвиг сверху
+.uk-animation-slide-bottom	Сдвиг снизу
+.uk-transition-toggle	Контейнер для анимации при наведении
+.uk-transition-fade	Плавное появление при наведении
+.uk-transition-scale-up	Увеличение при наведении
+Иконки
+Класс	Что делает
+.uk-icon	Контейнер для иконки
+.uk-icon-button	Иконка в виде кнопки
+.uk-icon-link	Иконка-ссылка
+Размеры и отклик
+Класс	Что делает
+.uk-width-1-1	100% ширина
+.uk-container	Контейнер с отступами
+.uk-container-small	Маленький контейнер
+.uk-container-large	Большой контейнер
+.uk-container-expand	Растянутый контейнер
+.uk-visible@s	Видимый на планшетах+
+.uk-visible@m	Видимый на десктопах+
+.uk-hidden@s	Скрытый на планшетах+
+.uk-hidden@m	Скрытый на десктопах+
