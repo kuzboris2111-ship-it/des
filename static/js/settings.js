@@ -1,6 +1,12 @@
 const groupId = new URLSearchParams(window.location.search).get('groupId')
-let data=[{id:1, name:"Main Folder", parentId:null},
-           {id:2, name:"Main1 Folder", parentId:null} ]
+const container = document.getElementById('tree-container')
+let data=[{id:1, name:"Main Folder", parentId:null} ]
+if (groupId) {
+    loadFolders(groupId)
+} else {
+    refreshTree()
+}
+
         //перестройка в дерево
         function buildTree(){
             let map = {}
@@ -21,6 +27,8 @@ let data=[{id:1, name:"Main Folder", parentId:null},
             }
             return folders
         }
+const mode = new URLSearchParams(window.location.search).get('mode') || 'default'
+
 const menu = document.createElement('div')
 menu.style.position = 'absolute'
 menu.style.backgroundColor = 'white'
@@ -57,6 +65,7 @@ addBtn.onclick = () => {
 
     }
     const form = document.getElementById('addForm')
+    if (form) {
     form.addEventListener('submit', (e) => {
         e.preventDefault()
         const name = document.getElementById('folder-name').value
@@ -65,6 +74,7 @@ addBtn.onclick = () => {
         document.getElementById('myModal').style.display = 'none'
         form.reset()
     })
+    }
 /*
 deleteBtn.onclick = () => {
     if (currentFolderId) {
@@ -168,6 +178,10 @@ async function loadFolders(groupId) {
     const folders = await res.json()
     if (Array.isArray(folders) && folders.length > 0) {
         data = folders
+        const hasRoot = data.some(f => f.parentId === null)
+        if (!hasRoot) {
+            data.unshift({ id: 1, name: "Main Folder", parentId: null })
+        }
     } else {
         data = [{id: 1, name: "Main Folder", parentId: null}]
     }
@@ -202,7 +216,18 @@ async function renameFolder(groupId, folderId, newName) {
 
 if (groupId) {
     loadFolders(groupId)
-} else {
+}
+else {
   refreshTree()
 }
-console.log(data)
+const letter=document.getElementById('creator')
+if (letter) {
+letter.addEventListener('click', ()=>{
+if (groupId) {
+    window.location.href = "./addUsers.html?groupId=" + groupId
+}
+else{
+    console.error('groupId не определён')
+}
+})
+}

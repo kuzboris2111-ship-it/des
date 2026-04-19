@@ -1,10 +1,12 @@
 const group=require('./models/Group')
+const User = require('./models/User')
 const bcrypt=require('bcrypt')
 const {validationResult}=require('express-validator')
 const jwt=require('jsonwebtoken')
 const {secret}=require("./secretkeys.js")
 const fs = require('fs');
 const path = require('path')
+const Drawing = require('./models/Drawing')
 
 const generatetoken=(id)=>{
        const payload={
@@ -20,7 +22,7 @@ class groupController{
         if(!errors.isEmpty()){
             return res.status(400).json({message:'Registration group error 11'})
         }
-        const {groupname, password}=req.body
+        const {groupname, password, userId}=req.body
         const candidate=await group.findOne({groupname})
         if(candidate){
             return res.status(400).json({message:'Registration group error 12'})
@@ -34,6 +36,7 @@ class groupController{
                 folders:[]
                 })
         await NewGroup.save()
+        await User.findByIdAndUpdate(userId, { $push: { groups: NewGroup._id } })
         fs.mkdir(path.join(__dirname, '../groups', groupname), { recursive: true }, (err) => {if (err) console.log(err)})
         return res.json({ message: "ALL OK", groupId: NewGroup._id })
 
@@ -55,7 +58,7 @@ class groupController{
                 return res.status(400).json({message:'Registration group error 22'})
             }
             const token=generatetoken(Mgroup._id)
-            return res.json({token})
+            return res.json({token, groupId: Mgroup._id})
         }
         catch{
             return res.status(400).json({message:'Registration group error 2'})
@@ -135,7 +138,32 @@ class groupController{
         await group.save()
         res.json("group delte")
     }
+    async addLine(req, res) {
+    try {
+        const {groupId, line, username}=req.body;
+        const a= await Drawing.findOneAndUpdate(
+            {groupId: groupId},
+            {$push:{lines:line}},
+            { upsert:true}
+        );
+        res.json({message:"Line append"});
+    }
+    catch(err){
+        res.status(400).json({message:"Error in append"});
+    }
+}
+    async getLines(req,res){
+        try{
+            const {groupId}=req.params
+            const line = await Drawing.findOne({groupId:groupId} )
+            if(!line) return res.json({lines:[]})
+            res.json({lines:line.lines})
 
+        }
+        catch{
+            res.status(400).json({message:"Error in getting line"});
+        }
+    }
 }
 
 module.exports = new groupController()

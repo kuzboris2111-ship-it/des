@@ -32,10 +32,11 @@ window.addEventListener("load", function() {
                 alert("Заполните все поля")
                 return
             }
+            const userId = localStorage.getItem('userId')
             sendData('/groups/registration',
-                { groupname, password, Admins:[], Users:[] },
+                { groupname, password, userId, Admins:[], Users:[] },
                 function(response) {
-
+                    console.log('Ответ сервера:', response)
                     alert(response.message || "Регистрация успешна");
                     if(response.message==="ALL OK"){
 
@@ -51,27 +52,25 @@ window.addEventListener("load", function() {
 
         })
     }
-})
-//вход в аккаунт
-/*
+
     const loginForm = document.getElementById("loginForm");
     if (loginForm) {
         loginForm.addEventListener("submit", function(event) {
             event.preventDefault();
-            const username = document.getElementById("loginUsername").value;
+            const groupname = document.getElementById("loginUsername").value;
             const password = document.getElementById("loginPassword").value;
 
-            if (!username || !password) {
+            if (!groupname || !password) {
                 alert("Заполните все поля");
                 return;
             }
-            sendData('/auth/login',
-                { username, password },
+            sendData('/groups/login',
+                { groupname, password },
                 function(response) {
                     if (response.token) {
                         localStorage.setItem("token", response.token);
                         alert("Вход выполнен");
-                        window.location.href = "/static/index.html";
+                        window.location.href = "/static/aflr1/aflr2/addUsers.html?groupId="+response.groupId;
                     } else {
                         alert(response.message || "Ошибка входа");
                     }
@@ -82,5 +81,4 @@ window.addEventListener("load", function() {
             );
         });
     }
-});
-*/
+})

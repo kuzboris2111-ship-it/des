@@ -8,7 +8,7 @@
     <title>Main Page</title>
 </head>
 <body>
-    <h1>Пути дейвствий</h1>
+    <h1>Пути действия</h1>
     <a href="/static/aflr1/group.html" class="button-link">Создать группу</a>
 
     <style>
@@ -19,20 +19,41 @@
         color: white;
         text-decoration: none;
         border-radius: 5px;
-    }
-    </style>
-    <a href="/static" class="button-link">Подключится к группе</a>
+        }
+.button-link01 {
+    display: block; /* Растягивает на всю ширину */
+    width: 100%; /* Занимает 100% контейнера */
+    box-sizing: border-box; /* Чтобы отступы не распирали кнопку */
+    margin-bottom: 10px; /* Расстояние между кнопками */
+    padding: 15px 20px;
 
-    <style>
-    .button-link {
-        display: inline-block;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-    }
+    background: #2d2d2d; /* Стильный темный цвет */
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 12px;
+    font-family: 'Segoe UI', sans-serif;
+    font-weight: 500;
+    border: 1px solid rgba(255,255,255,0.1);
+
+    transition: all 0.3s ease;
+}
+
+/* Эффект при наведении */
+.button-link01:hover {
+    background: #3d3d3d;
+    transform: scale(1.02); /* Легкое увеличение */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* Убираем отступ у последней кнопки */
+.button-link01:last-child {
+    margin-bottom: 0;
+}
     </style>
-    <a href="/static/" class="button-link">Создать группу</a>
+    <a href="/static/aflr1/connectgr.html" class="button-link">Подключится к группе</a>
+    <h2>Мои группы:</h2>
+    <div id="groups-list"></div>
+    <script src="/static/js/mainpage.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ const {check}=require('express-validator')
 
 router.post('/registration', [
     check('groupname', 'groupname is empty').notEmpty(),
-    check('password', 'password must be have min:6, max:10 symbols').isLength({min: 6, max: 10})
+    check('password', 'password must be have min:6, max:10 symbols').isLength({min: 6})
 ], groupContrl.registration)
 
 router.post('/login', groupContrl.login)
@@ -15,4 +15,7 @@ router.post('/folder', groupContrl.createFolder)
 router.delete('/folder', groupContrl.deleteFolders)
 router.get('/:groupId/folders', groupContrl.getFolders)
 router.put('/folder', groupContrl.updateFolders)
+
+router.post('/drawing/line', groupContrl.addLine)
+router.get('/drawing/:groupId', groupContrl.getLines)
 module.exports=router

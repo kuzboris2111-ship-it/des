@@ -35,6 +35,7 @@ window.addEventListener("load", function() {
 
                     alert(response.message || "Регистрация успешна");
                     if(response.message==="ALL OK"){
+                        localStorage.setItem('username', username)
                         window.location.href = "/static/mainpage.html";
                     }
                 },
@@ -49,8 +50,8 @@ window.addEventListener("load", function() {
     if (loginForm) {
         loginForm.addEventListener("submit", function(event) {
             event.preventDefault();
-            const username = document.getElementById("loginUsername").value;
-            const password = document.getElementById("loginPassword").value;
+            const username = document.getElementById("loginUsername").value
+            const password = document.getElementById("loginPassword").value
             
             if (!username || !password) {
                 alert("Заполните все поля");
@@ -60,9 +61,11 @@ window.addEventListener("load", function() {
                 { username, password },
                 function(response) {
                     if (response.token) {
-                        localStorage.setItem("token", response.token);
+                        localStorage.setItem("token", response.token)
+                        localStorage.setItem("userId", response.userId)
+                        localStorage.setItem('username', response.username)
                         alert("Вход выполнен");
-                        window.location.href = "/static/index.html";
+                        window.location.href = "/static/mainpage.html";
                     } else {
                         alert(response.message || "Ошибка входа");
                     }

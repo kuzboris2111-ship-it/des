@@ -35,7 +35,7 @@ class authController{
             return res.json({message:"ALL OK"})
         }
         catch(err){
-            res.status(400).json({message:'Registration1 error'})
+            res.status(400).json({message:'Registration error'})
         }
     }
 
@@ -44,19 +44,17 @@ class authController{
         try{
             const{username, password}=req.body
             const user=await User.findOne({username})
-            if(!user){
-                return res.status(400).json({message:'Registration21 error'})
-            }
             const validpas= bcrypt.compareSync(password, user.password)
-            if(!validpas){
-                return res.status(400).json({message:'Registration22 error'})
+            if(!validpas || !user){
+                return res.status(400).json({message:'Некорректное имя пользователя или пароль'})
             }
             const token=generatetoken(user._id,user.roles)
-            return res.json({token})
+            return res.json({ token, userId: user._id, username: user.username })
+
         }
         catch(err){
             console.log(err)
-            res.status(400).json({message:'Login error'})
+            res.status(400).json({message:'Некорректное имя пользователя или пароль'})
         }
     }
 
@@ -75,6 +73,16 @@ class authController{
             console.log(err)
         }
     }
+    async getUserGroups(req, res) {
+    try {
+        const { userId } = req.query
+        const user = await User.findById(userId).populate('groups', 'groupname')
+        res.json({ groups: user.groups || [] })
+    }
+    catch(err) {
+        res.status(400).json({ message: 'Ошибка' })
+    }
+}
 }
 
 module.exports = new authController();

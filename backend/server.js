@@ -3,6 +3,7 @@ const path = require('path')
 const mongoose=require('mongoose')
 const authRouter=require('./authRouter')
 const groupRouter=require("./groupRouter")
+
 const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
@@ -16,21 +17,27 @@ app.use('/static', express.static(path.join(__dirname, '../static')))
 app.use('/auth', authRouter)
 app.use('/groups', groupRouter)
 //проверка подключений
-let connections = [];
-io.on("connection", (socket) => {
-    console.log("connect");
-    connections.push(socket);
+io.on('connection', (socket) => {
+    console.log('User connect')
 
-    socket.on("disconnect", () => {
-        connections.splice(connections.indexOf(socket), 1);
-        console.log("disconnect");
-    });
-});
+    socket.on('join-group', (groupId) => {
+        socket.join(groupId)
+        console.log(`Пользователь присоединился к группе ${groupId}`)
+    })
+
+    socket.on('draw', (data) => {
+        socket.to(data.groupId).emit('draw', data)
+    })
+})
 //-------------------------------------------------------
 const start=async()=>{
     try{
         await mongoose.connect('mongodb://127.0.0.1:27017/orgaspace')
-        app.listen(PORT, ()=>console.log(`Для ноутбука:http://localhost:${PORT}`))
+        server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Сервер запущен:`)
+    console.log(`Локально: http://localhost:${PORT}`)
+    console.log(`По Wi-Fi: http://192.168.0.148:${PORT}`)
+})
     }
     catch(err){
         console.log(err)

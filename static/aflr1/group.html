@@ -1,126 +1,33 @@
-<!doctype html>
-<html lang="ru">
+<!DOCTYPE html>
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <title>MakingGroup</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-       body {
-        background: linear-gradient(135deg, #0a1f1a 0%, #1a2f28 100%);
-        min-height: 100vh;
-    }
-
-    .card-custom {
-        background: rgba(10, 31, 26, 0.95);
-        border: 1px solid #ffd966;
-        border-radius: 20px;
-    }
-
-    .btn-gold {
-        background: #ffd966;
-        border: none;
-        color: #0a1f1a;
-        font-weight: bold;
-    }
-
-    .btn-gold:hover {
-        background: #ffcd33;
-        transform: translateY(-2px);
-    }
-
-    .btn-outline-gold {
-        background: transparent;
-        border: 2px solid #ffd966;
-        color: #ffd966;
-        font-weight: bold;
-    }
-
-    .btn-outline-gold:hover {
-        background: #ffd966;
-        color: #0a1f1a;
-    }
-
-    .text-gold {
-        color: #ffd966;
-    }
-
-    .input-gold {
-        background: rgba(10, 31, 26, 0.8);
-        border: 1px solid #2a4a3a;
-        color: white;
-    }
-
-    .input-gold:focus {
-        border-color: #ffd966;
-        outline: none;
-        box-shadow: 0 0 10px rgba(255,217,102,0.3);
-    }
-
-    .navbar-gold {
-        background: rgba(10, 31, 26, 0.95);
-        border-bottom: 2px solid #ffd966;
-    }
-
-    .navbar-gold .navbar-brand {
-        color: #ffd966;
-        font-weight: bold;
-    }
-
-    .navbar-gold .nav-link:hover {
-        color: #ffd966;
-    }
-
-    .department-gold {
-        background: rgba(10, 31, 26, 0.8);
-        border-left: 4px solid #ffd966;
-        padding: 12px;
-        border-radius: 12px;
-    }
-
-    .department-gold:hover {
-        background: rgba(255,217,102,0.1);
-        transform: translateX(5px);
-    }
-
-    .badge-gold {
-        background: #ffd966;
-        color: #0a1f1a;
-        padding: 5px 10px;
-        border-radius: 20px;
-    }
-
-    .chat-message-gold {
-        background: rgba(10, 31, 26, 0.8);
-        padding: 10px;
-        border-radius: 12px;
-        border-right: 3px solid #ffd966;
-    }
-
-    .chat-message-gold .user {
-        color: #ffd966;
-        font-weight: bold;
-    }
-    </style>
+    <title>Регистрация | WorkTree</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/uikit@3.23.0/dist/css/uikit.min.css" />
+    <link rel="stylesheet" href="/static/css/style.css" />
 </head>
-<body>
-    <h1 class="text-gold text-center mt-4 mb-2">Создание группы</h1>
+<body class="uk-flex uk-flex-center uk-flex-middle" style="min-height: 100vh;">
 
-    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-    <div class="card-custom" style="width: 300px; min-height: 200px;">
-    <form id="regForm">
-        <input type="text" class="input-gold:focus text-center mt-4 ms-5" id="regUsername" placeholder="Название группы" required>
-        <br>
-        <input type="password" class="input-gold:focus text-center mt-4 ms-5" id="regPassword" placeholder="Пароль" required>
-        <br>
-        <button type="submit" class="btn-gold text-center mt-5 ms-5">Создать</button>
+    <div class="uk-card register-card uk-card-body uk-width-1-2 uk-width-1-3@m uk-border-rounded">
 
-    </form>
+        <h2 class="uk-card-title uk-text-center uk-text-primary">Регистрация</h2>
+
+        <form id="regForm">
+            <div class="uk-margin">
+                <input type="text" id="regUsername" class="uk-input uk-form-large" placeholder="Название группы" required>
+            </div>
+
+            <div class="uk-margin">
+                <input type="password" id="regPassword" class="uk-input uk-form-large" placeholder="Пароль" required>
+            </div>
+
+            <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-button-large uk-margin-top">
+                Зарегистрировать
+            </button>
+        </form>
     </div>
-    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/uikit@3.23.0/dist/js/uikit.min.js"></script>
     <script src="/static/js/forgroups.js"></script>
 </body>
 </html>
