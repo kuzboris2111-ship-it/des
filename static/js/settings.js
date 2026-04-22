@@ -1,5 +1,14 @@
 const groupId = new URLSearchParams(window.location.search).get('groupId')
 const container = document.getElementById('tree-container')
+const urlParams = new URLSearchParams(window.location.search)
+const mode = urlParams.get('mode')
+localStorage.setItem('currentFolderId', '1')
+console.log('folderId =', localStorage.getItem('currentFolderId'))
+
+let menu
+let currentFolderId = null
+
+
 let data=[{id:1, name:"Main Folder", parentId:null} ]
 if (groupId) {
     loadFolders(groupId)
@@ -27,9 +36,8 @@ if (groupId) {
             }
             return folders
         }
-const mode = new URLSearchParams(window.location.search).get('mode') || 'default'
-
-const menu = document.createElement('div')
+if(mode=='settings') {
+menu = document.createElement('div')
 menu.style.position = 'absolute'
 menu.style.backgroundColor = 'white'
 menu.style.border = '1px solid #ccc'
@@ -56,7 +64,7 @@ menu.appendChild(addBtn)
 menu.appendChild(deleteBtn)
 document.body.appendChild(menu)
 
-let currentFolderId = null
+currentFolderId = null
 
 
 addBtn.onclick = () => {
@@ -88,7 +96,12 @@ document.addEventListener('click', (e) => {
         menu.style.display = 'none'
     }
 
-})
+})}
+else{
+    menu=document.createElement('div')
+    menu.style.display='none'
+    document.body.appendChild(menu)
+}
         // создание дерева
         function renderTree(tree){
         console.log('renderTree вызван, tree.length:', tree.length)
@@ -119,19 +132,25 @@ document.addEventListener('click', (e) => {
                 }
 
 //================================================================
-                header.addEventListener('click', (e)=>{
+               header.addEventListener('click', (e)=>{
                     e.stopPropagation()
                     currentFolderId = folder.id
 
                     document.querySelectorAll('.folder-header').forEach(i => {
                         i.style.backgroundColor = ''
                     })
-
-                    menu.style.display='block'
-                    menu.style.left = e.pageX + 'px'
-                    menu.style.top = e.pageY + 'px'
-
                     header.style.backgroundColor = 'rgba(255,217,102,0.2)'
+                    if (mode=='desk') {
+                        localStorage.setItem('currentFolderId', currentFolderId)
+                    if (typeof loadLines === 'function') {
+                        loadLines(currentFolderId)
+                    }
+                    }
+                    else {
+                        menu.style.display = 'block'
+                        menu.style.left = e.pageX + 'px'
+                        menu.style.top = e.pageY + 'px'
+                    }
                 })
 //-----------------------------------------------------------------
 
@@ -224,7 +243,7 @@ const letter=document.getElementById('creator')
 if (letter) {
 letter.addEventListener('click', ()=>{
 if (groupId) {
-    window.location.href = "./addUsers.html?groupId=" + groupId
+    window.location.href = "./addUsers.html?groupId=" + groupId +  '&mode=desk'
 }
 else{
     console.error('groupId не определён')

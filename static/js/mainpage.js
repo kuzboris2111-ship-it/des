@@ -10,7 +10,7 @@ if (userId) {
                     const div = document.createElement('div')
                     div.className = 'group-card'
                     div.innerHTML = `
-                        <button onclick="location.href='/static/aflr1/aflr2/addUsers.html?groupId=${group._id}' ", class="button-link01">${group.groupname}</button>`
+                        <button onclick="location.href='/static/aflr1/aflr2/addUsers.html?groupId=${group._id}&mode=desk' ", class="button-link01">${group.groupname}</button>`
                     container.appendChild(div)
                 })
             }

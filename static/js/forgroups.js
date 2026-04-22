@@ -41,7 +41,7 @@ window.addEventListener("load", function() {
                     if(response.message==="ALL OK"){
 
 
-                        window.location.href = "/static/aflr1/aflr2/settingsgroup.html?groupId=" + response.groupId
+                        window.location.href = "/static/aflr1/aflr2/settingsgroup.html?groupId=" + response.groupId + "&mode=settings"
 
                     }
                 },
@@ -70,7 +70,7 @@ window.addEventListener("load", function() {
                     if (response.token) {
                         localStorage.setItem("token", response.token);
                         alert("Вход выполнен");
-                        window.location.href = "/static/aflr1/aflr2/addUsers.html?groupId="+response.groupId;
+                        window.location.href = "/static/aflr1/aflr2/addUsers.html?groupId="+response.groupId + "&mode=desk";
                     } else {
                         alert(response.message || "Ошибка входа");
                     }

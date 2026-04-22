@@ -8,6 +8,7 @@ canvas.addEventListener('click', (event) => {
 
 export function initBoard(canvas, groupId) {
 const ctx = canvas.getContext('2d')
+let currentFolderId = localStorage.getItem('currentFolderId')
 
 const socket = io()
 socket.emit('join-group', groupId)
@@ -123,8 +124,8 @@ canvas.addEventListener('mouseup', (e)=>{
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
                 groupId: groupId,
+                folderId: currentFolderId,
                 line: newLine
-                //username: localStorage.getItem("username")
             })
         })
         thilines = []
@@ -161,7 +162,6 @@ function draw() {
         }
         ctx.stroke()
     }
-    console.log('Отрисовано линий:', lines.length)
     if(thilines.length>2){
         ctx.beginPath()
         ctx.moveTo(thilines[0].x, thilines[0].y)
@@ -176,21 +176,24 @@ function draw() {
 }
 
 
-async function loadLines() {
-    try {
-        const res=await fetch(`/groups/drawing/${groupId}`)
-        const data=await res.json()
-        if (data.lines) {
-            lines=data.lines
-            draw()
+    async function loadLines(folderId) {
+        try {
+            const groupId = new URLSearchParams(window.location.search).get('groupId')
+            const res=await fetch(`/groups/drawing/${groupId}/${folderId}`)
+            const data=await res.json()
+            lines=[]
+            thilines=[]
+            ctx.clearRect(0, 0, canvas.width, canvas.height)
+            if (data.lines) {
+                lines=data.lines
+                draw()
+            }
+        } catch (e){
+            console.log('Error in load lines', e)
         }
-        console.log('Загружено линий:', data.lines.length)
-    } catch (e){
-        console.log('Error in load lines', e)
     }
-}
 if (groupId) {
-    loadLines()
+console.log(1)
 } else {
     draw()
 }

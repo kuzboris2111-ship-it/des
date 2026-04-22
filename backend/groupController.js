@@ -125,7 +125,7 @@ class groupController{
 
         function reqdel(parentId){
             const childsId=[]
-            for (let i  of group.folders){
+            for (let i  of foundGroup.folders){
                 if(i.parentId==parentId){
                     childsId.push(i.id)
                     childsId.push(...reqdel(i.id))
@@ -138,24 +138,28 @@ class groupController{
         await group.save()
         res.json("group delte")
     }
+
+
+
     async addLine(req, res) {
     try {
-        const {groupId, line, username}=req.body;
+        const {groupId, folderId, line}=req.body;
         const a= await Drawing.findOneAndUpdate(
-            {groupId: groupId},
+            {groupId: groupId, folderId:folderId},
             {$push:{lines:line}},
             { upsert:true}
         );
         res.json({message:"Line append"});
     }
     catch(err){
-        res.status(400).json({message:"Error in append"});
+            console.log('ОШИБКА В addLine:', err.message)
+    res.status(400).json({ message: err.message })
     }
 }
     async getLines(req,res){
         try{
-            const {groupId}=req.params
-            const line = await Drawing.findOne({groupId:groupId} )
+            const {groupId, folderId}=req.params
+            const line = await Drawing.findOne({groupId:groupId, folderId:folderId})
             if(!line) return res.json({lines:[]})
             res.json({lines:line.lines})
 
@@ -164,6 +168,16 @@ class groupController{
             res.status(400).json({message:"Error in getting line"});
         }
     }
+    async getLinesByGroup(req, res) {
+    try {
+        const {groupId} = req.params
+        const drawings = await Drawing.find({ groupId: groupId })
+        const allLines = drawings.flatMap(d => d.lines)
+        res.json({lines: allLines })
+    } catch {
+        res.status(400).json({ message: "Error" })
+    }
+}
 }
 
 module.exports = new groupController()
