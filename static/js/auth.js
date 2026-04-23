@@ -36,7 +36,7 @@ window.addEventListener("load", function() {
                     alert(response.message || "Регистрация успешна");
                     if(response.message==="ALL OK"){
                         localStorage.setItem('username', username)
-                        window.location.href = "/static/mainpage.html";
+                        window.location.href = "/static/mainpage.html"
                     }
                 },
                 function(error) {

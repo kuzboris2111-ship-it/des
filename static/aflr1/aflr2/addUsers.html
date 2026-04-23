@@ -106,8 +106,15 @@
 <script src="https://cdn.socket.io/4.8.3/socket.io.min.js"></script>
 <script type="module" src="/static/js/setadduser.js"></script>
 <!--кнопки, которые по умолчанию: чат(открывает чат поверх экрана), рисование и с самого боку есть 3 кнопки: 1 - отвечает за открытие дерева папок, 2-за переход в меню пользователя, 3-за что нибудь еще +9-->
+<div>
+    <h1>СООБЩЕНИЕ:</h1>
+            <form id="messForm">
+                <textarea name="message" id="message" class="form" placeholder="your message"></textarea>
+                <br>
+                <input type="button" value="send" class="btn btn-danger">
+            </form>
+</div>
 <script src="/static/js/settings.js"></script>
-
 <script>
     const swimline = document.getElementById('swimline');
     const sidebar = document.getElementById('sidebar');

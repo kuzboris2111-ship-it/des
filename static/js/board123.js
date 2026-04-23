@@ -7,19 +7,23 @@ canvas.addEventListener('click', (event) => {
 
 
 export function initBoard(canvas, groupId) {
-const ctx = canvas.getContext('2d')
-let currentFolderId = localStorage.getItem('currentFolderId')
 
+const ctx = canvas.getContext('2d')
+function clearCanvas(){
+    ctx.clearRect(0,0, canvas.width, canvas.height)
+}
 const socket = io()
 socket.emit('join-group', groupId)
 
 socket.on('draw', (data) => {
+
     ctx.lineTo(data.x, data.y)
     ctx.stroke()
 })
 
 
-
+canvas.width=canvas.offsetWidth
+canvas.height=canvas.offsetHeight
 let movement=false
 let painting=false
 let flag =true
@@ -94,8 +98,8 @@ canvas.addEventListener('mousemove', (e)=>{
 }
     else if (painting && !flag){
     const rect = canvas.getBoundingClientRect()
-    const x = e.offsetX
-const y = e.offsetY
+    const x = e.clientX-rect.left
+    const y = e.clientY-rect.top
     ctx.lineTo(x, y)
     thilines.push({ x, y })
     socket.emit('draw', {groupId, x,y})
@@ -124,7 +128,7 @@ canvas.addEventListener('mouseup', (e)=>{
             headers:{'Content-Type':'application/json'},
             body: JSON.stringify({
                 groupId: groupId,
-                folderId: currentFolderId,
+                folderId: localStorage.getItem('currentFolderId'),
                 line: newLine
             })
         })
@@ -143,7 +147,7 @@ function draw() {
     let leng=20
     let x= Math.floor((-genX)/leng)*leng
     let y=Math.floor((-genY)/leng)*leng
-
+    ctx.beginPath()
     for (let i=x; i<=canvas.width-genX ; i+=leng){
         for (let j=y; j<=canvas.height-genY;j+=leng){
         ctx.fillStyle = 'orange'
@@ -178,12 +182,12 @@ function draw() {
 
     async function loadLines(folderId) {
         try {
+            clearCanvas()
             const groupId = new URLSearchParams(window.location.search).get('groupId')
             const res=await fetch(`/groups/drawing/${groupId}/${folderId}`)
             const data=await res.json()
             lines=[]
             thilines=[]
-            ctx.clearRect(0, 0, canvas.width, canvas.height)
             if (data.lines) {
                 lines=data.lines
                 draw()
@@ -193,8 +197,9 @@ function draw() {
         }
     }
 if (groupId) {
-console.log(1)
+    loadLines(localStorage.getItem('currentFolderId'))
 } else {
     draw()
 }
+window.loadLines=loadLines
 }

@@ -142,9 +142,13 @@ else{
                     header.style.backgroundColor = 'rgba(255,217,102,0.2)'
                     if (mode=='desk') {
                         localStorage.setItem('currentFolderId', currentFolderId)
-                    if (typeof loadLines === 'function') {
+                        console.log("load:", typeof loadLines)
+                    if(typeof clearCanvas==='function'){
+                        clearCanvas()
+                    } if (typeof loadLines === 'function') {
                         loadLines(currentFolderId)
                     }
+
                     }
                     else {
                         menu.style.display = 'block'

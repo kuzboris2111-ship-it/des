@@ -29,6 +29,12 @@ io.on('connection', (socket) => {
         socket.to(data.groupId).emit('draw', data)
     })
 })
+
+io.on('connection', (socket) => {
+    socket.on('join-group', (groupId) => {
+        socket.join(groupId)
+    })
+})
 //-------------------------------------------------------
 const start=async()=>{
     try{
@@ -37,6 +43,7 @@ const start=async()=>{
     console.log(`Сервер запущен:`)
     console.log(`Локально: http://localhost:${PORT}`)
     console.log(`По Wi-Fi: http://192.168.0.148:${PORT}`)
+    console.log(`По Wi-Fi: http://10.2.0.233:${PORT}`)
 })
     }
     catch(err){
