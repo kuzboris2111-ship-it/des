@@ -84,59 +84,42 @@
 
 <div class="app-container">
     <aside id="sidebar" class="sidebar">
-        <h4>Мои папки</h4>
+        <h4>Папки:</h4>
         <div id="tree-container" class="folder-tree"></div>
     </aside>
 
-    <div id="swimline" class="resizer"></div>
-
-    <main class="main-content">
-        <div class="mode-buttons">
-            <button id="drawModeBtn" class="mode-btn active">✏️ Доска</button>
+    <div style="display: flex; flex-direction: column; width: 100%;">
+        <div style="display: flex; gap: 10px; padding: 10px;">
+            <button id="btnDesk" class="mode-btn active">Desk</button>
+            <button id="btnChat" class="mode-btn">Chat</button>
         </div>
 
-        <div id="drawContainer" class="mode-container">
-            <canvas id="canvas" width="800" height="500"></canvas>
+        <div id="swimline" class="resizer"></div>
+
+        <!-- Доска -->
+        <main id="deskPanel" class="main-content" style="display: block; flex: 1;">
+            <div id="drawContainer" class="mode-container">
+                <canvas id="canvas" width="800" height="500"></canvas>
+            </div>
+        </main>
+
+        <!-- Чат -->
+        <div id="chatPanel" class="main-content" style="display: none; flex: 1; padding: 15px;">
+            <div id="chatMessages" style="height: 70%; overflow-y: auto; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;"></div>
+            <textarea id="chatInput" placeholder="Сообщение" rows="2" style="width: 100%;"></textarea>
+            <input type="file" id="chatFile" style="display: none;">
+            <button id="chatFileBtn">📎 Прикрепить файл</button>
+            <button id="chatSend" class="btn btn-primary mt-2">Отправить</button>
         </div>
-    </main>
+    </div>
 </div>
-<div class="app-container">
-</div>
+
+<!--кнопки, которые по умолчанию: чат(открывает чат поверх экрана), рисование и с самого боку есть 3 кнопки: 1 - отвечает за открытие дерева папок, 2-за переход в меню пользователя, 3-за что нибудь еще +9-->
+
+<script src="/static/js/settings.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.socket.io/4.8.3/socket.io.min.js"></script>
 <script type="module" src="/static/js/setadduser.js"></script>
-<!--кнопки, которые по умолчанию: чат(открывает чат поверх экрана), рисование и с самого боку есть 3 кнопки: 1 - отвечает за открытие дерева папок, 2-за переход в меню пользователя, 3-за что нибудь еще +9-->
-<div>
-    <h1>СООБЩЕНИЕ:</h1>
-            <form id="messForm">
-                <textarea name="message" id="message" class="form" placeholder="your message"></textarea>
-                <br>
-                <input type="button" value="send" class="btn btn-danger">
-            </form>
-</div>
-<script src="/static/js/settings.js"></script>
-<script>
-    const swimline = document.getElementById('swimline');
-    const sidebar = document.getElementById('sidebar');
-    let do = false;
 
-    swimline.addEventListener('mousedown', (e) => {
-        do = true;
-        document.body.style.cursor = 'ew-resize';
-    });
-
-    document.addEventListener('mousemove', (e) => {
-        if (!do) return;
-        const newWidth = e.clientX;
-        if (newWidth>150 && newWidth<500) {
-            sidebar.style.width=newWidth + 'px';
-        }
-    });
-
-    document.addEventListener('mouseup', () => {
-        do = false;
-        document.body.style.cursor='';
-    });
-</script>
 </body>
 </html>

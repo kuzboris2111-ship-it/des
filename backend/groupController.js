@@ -7,7 +7,7 @@ const {secret}=require("./secretkeys.js")
 const fs = require('fs');
 const path = require('path')
 const Drawing = require('./models/Drawing')
-
+const Chat=require('./models/Chat')
 const generatetoken=(id)=>{
        const payload={
         id
@@ -177,6 +177,38 @@ class groupController{
     } catch {
         res.status(400).json({ message: "Error" })
     }
+}
+    async addMessage(req,res){
+    try{
+        const { groupId, folderId, text,username, fileUrl, fileName}=req.body
+        await Chat.findOneAndUpdate(
+            {groupId,folderId},
+            {
+            $push: {
+                message: { text, username, fileUrl, fileName, createdAt: new Date() }
+            }},
+            { upsert: true, new: true }
+
+        )
+        res.json({message:"Message append"});
+    }
+    catch(e){
+            res.status(400).json({ message: "Error" })
+
+    }
+    }
+    async getMessage(req,res){
+        try{
+        const {groupId, folderId}=req.params
+        const chat =await Chat.findOne({groupId:groupId, folderId:folderId})
+        if(!chat){ return res.json({message:[]})}
+        res.json({message:chat.message})
+        }
+
+        catch{
+                        res.status(400).json({ message: "Error" })
+
+        }
 }
 }
 

@@ -19,4 +19,9 @@
     router.post('/drawing/line', groupContrl.addLine)
     router.get('/drawing/:groupId', groupContrl.getLinesByGroup)
     router.get('/drawing/:groupId/:folderId', groupContrl.getLines)
+
+
+
+    router.post('/chat/message', groupContrl.addMessage)
+    router.get('/chat/:groupId/:folderId', groupContrl.getMessage)
     module.exports=router

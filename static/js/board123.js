@@ -8,13 +8,67 @@ canvas.addEventListener('click', (event) => {
 
 export function initBoard(canvas, groupId) {
 
+
+async function loadChatHistory() {
+    const res = await fetch(`/groups/chat/${groupId}/${localStorage.getItem('currentFolderId')}`)
+    const data = await res.json()
+    chatMessages.innerHTML = ''
+    data.message.forEach(msg => {
+        const du = document.createElement('div')
+        du.innerHTML = `<b>${msg.username}:</b> ${msg.text}`
+        if (msg.fileUrl) du.innerHTML += ` <a href="${msg.fileUrl}">📎 ${msg.fileName}</a>`
+        chatMessages.appendChild(du)
+    })
+}
+//---------------------
+
+const swimline = document.getElementById('swimline');
+    const sidebar = document.getElementById('sidebar');
+    let d = false;
+
+    swimline.addEventListener('mousedown', (e) => {
+        d = true;
+        document.body.style.cursor = 'ew-resize';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (!d) return;
+        const newWidth = e.clientX;
+        if (newWidth>150 && newWidth<500) {
+            sidebar.style.width=newWidth + 'px';
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        d= false;
+        document.body.style.cursor='';
+    });
+    const btnDesk=document.getElementById('btnDesk')
+    const btnChat=document.getElementById('btnChat')
+    const deskPanel = document.getElementById('deskPanel');
+    const chatPanel = document.getElementById('chatPanel');
+    btnDesk.addEventListener('click', () => {
+        btnDesk.classList.add('active');
+        btnChat.classList.remove('active');
+        deskPanel.style.display = 'block';
+        chatPanel.style.display = 'none';
+    });
+
+    btnChat.addEventListener('click', () => {
+        btnChat.classList.add('active');
+        btnDesk.classList.remove('active');
+        deskPanel.style.display = 'none';
+        chatPanel.style.display = 'block';
+        loadChatHistory()
+    });
+//---------------------
 const ctx = canvas.getContext('2d')
 function clearCanvas(){
     ctx.clearRect(0,0, canvas.width, canvas.height)
 }
 const socket = io()
-socket.emit('join-group', groupId)
-
+const currentFolderId = localStorage.getItem('currentFolderId')
+socket.emit('join-group', `${groupId}_${currentFolderId}`)
 socket.on('draw', (data) => {
 
     ctx.lineTo(data.x, data.y)
@@ -42,7 +96,7 @@ let startGenY=0
 let lines=[]
 let thilines=[]
 
-
+let  chat = false
 
 
 
@@ -78,8 +132,8 @@ canvas.addEventListener('mousedown', (e) => {
     }
     else{
         ctx.beginPath();
-            const x = e.offsetX
-    const y = e.offsetY
+        const x = e.offsetX
+        const y = e.offsetY
         ctx.moveTo(x, y)
         thilines = [{ x, y }]
         painting=true
@@ -98,7 +152,7 @@ canvas.addEventListener('mousemove', (e)=>{
 }
     else if (painting && !flag){
     const rect = canvas.getBoundingClientRect()
-    const x = e.clientX-rect.left
+    const x = (e.clientX-rect.left)
     const y = e.clientY-rect.top
     ctx.lineTo(x, y)
     thilines.push({ x, y })
@@ -179,7 +233,6 @@ function draw() {
     ctx.restore()
 }
 
-
     async function loadLines(folderId) {
         try {
             clearCanvas()
@@ -201,5 +254,68 @@ if (groupId) {
 } else {
     draw()
 }
+
+//----------------------------ЛОГИКА ЧАТА---------------------
+let message=[]
+
+const chatMessages = document.getElementById('chatMessages')
+
+const add=document.getElementById("chatSend")
+const chatInput=document.getElementById('chatInput')
+const chatFile=document.getElementById('chatFile')
+const chatFileBtn=document.getElementById('chatFileBtn')
+let pendingFile=null
+
+chatFileBtn.onclick =()=>{
+    chatFile.click()}
+chatFile.onchange= async ()=>{
+    const file=chatFile.files[0]
+    if(!file) return
+    const formData= new FormData()
+    formData.append('file', file)
+    const res = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+    })
+    const data = await res.json()
+    pendingFile = {fileUrl:data.fileUrl, fileName:data.fileName}
+
+}
+
+add.addEventListener('click', ()=>{
+    const text=chatInput.value
+    if(!text) return
+    console.log('Клик по кнопке отправки', text)
+    const messageDate={groupId: groupId,
+                folderId: localStorage.getItem('currentFolderId'),
+                text:text,
+                username: localStorage.getItem('username'),
+                fileUrl: pendingFile?.fileUrl,
+                fileName: pendingFile?.fileName
+    }
+    fetch('/groups/chat/message', {
+            method:'POST',
+            headers:{'Content-Type':'application/json'},
+            body: JSON.stringify(messageDate)
+        })
+            socket.emit('chat-message', messageDate)
+
+        chatInput.value=''
+        pendingFile = null
+        chatFile.value = ''
+
+})
+socket.on('chat-message', (data) => {
+    if (data.folderId === localStorage.getItem('currentFolderId')) {
+        const du = document.createElement('div')
+        du.innerHTML = `<b>${data.username}:</b> ${data.text}`
+        if (data.fileUrl) du.innerHTML+=`<a href="${data.fileUrl}">📎 ${data.fileName}</a>`
+        chatMessages.appendChild(du)
+        chatMessages.scrollTop = chatMessages.scrollHeight
+    }
+})
+
+
+//------------------------------------------------------------
 window.loadLines=loadLines
 }

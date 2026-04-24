@@ -20,21 +20,19 @@ app.use('/groups', groupRouter)
 io.on('connection', (socket) => {
     console.log('User connect')
 
-    socket.on('join-group', (groupId) => {
-        socket.join(groupId)
-        console.log(`Пользователь присоединился к группе ${groupId}`)
+    socket.on('join-group', (roomId) => {
+        socket.join(roomId)
+        console.log(`Пользователь присоединился к группе ${roomId}`)
     })
 
     socket.on('draw', (data) => {
         socket.to(data.groupId).emit('draw', data)
     })
-})
-
-io.on('connection', (socket) => {
-    socket.on('join-group', (groupId) => {
-        socket.join(groupId)
+    socket.on('chat-message', async (data) => {
+        io.to(`${data.groupId}_${data.folderId}`).emit('chat-message', data)
     })
 })
+
 //-------------------------------------------------------
 const start=async()=>{
     try{

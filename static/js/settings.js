@@ -60,6 +60,17 @@ deleteBtn.style.width = '100%'
 deleteBtn.style.margin = '2px 0'
 deleteBtn.style.padding = '5px'
 
+const renameBtn = document.createElement('button')
+renameBtn.textContent = '✏️ Переименовать'
+renameBtn.style.display = 'block'
+renameBtn.style.width = '100%'
+renameBtn.style.margin = '2px 0'
+renameBtn.style.padding = '5px'
+
+
+
+
+menu.appendChild(renameBtn)
 menu.appendChild(addBtn)
 menu.appendChild(deleteBtn)
 document.body.appendChild(menu)
@@ -83,14 +94,20 @@ addBtn.onclick = () => {
         form.reset()
     })
     }
-/*
+
 deleteBtn.onclick = () => {
     if (currentFolderId) {
         deleteFolder(groupId, currentFolderId)
     }
     menu.style.display = 'none'
-}*/
-
+}
+renameBtn.onclick = () => {
+    const newName = prompt('Новое название папки:', currentFolderName)
+    if (newName) {
+        renameFolder(groupId, currentFolderId, newName)
+    }
+    menu.style.display = 'none'
+}
 document.addEventListener('click', (e) => {
     if (!menu.contains(e.target)) {
         menu.style.display = 'none'
@@ -135,7 +152,7 @@ else{
                header.addEventListener('click', (e)=>{
                     e.stopPropagation()
                     currentFolderId = folder.id
-
+                    currentFolderName = folder.name
                     document.querySelectorAll('.folder-header').forEach(i => {
                         i.style.backgroundColor = ''
                     })
