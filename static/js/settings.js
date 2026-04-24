@@ -2,7 +2,7 @@ const groupId = new URLSearchParams(window.location.search).get('groupId')
 const container = document.getElementById('tree-container')
 const urlParams = new URLSearchParams(window.location.search)
 const mode = urlParams.get('mode')
-localStorage.setItem('currentFolderId', '1')
+
 console.log('folderId =', localStorage.getItem('currentFolderId'))
 
 let menu
@@ -243,7 +243,7 @@ async function deleteFolder(groupId,folderId) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ groupId, folderId })
     })
-    loadFolders()
+    await loadFolders(groupId)
 }
 async function renameFolder(groupId, folderId, newName) {
     await fetch('/groups/folder', {
@@ -251,7 +251,7 @@ async function renameFolder(groupId, folderId, newName) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ groupId, folderId, name: newName })
     })
-    loadFolders()
+    await loadFolders(groupId)
 }
 
 if (groupId) {

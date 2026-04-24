@@ -126,16 +126,18 @@ class groupController{
         function reqdel(parentId){
             const childsId=[]
             for (let i  of foundGroup.folders){
-                if(i.parentId==parentId){
+                if(String(i.parentId)===String(parentId)){
                     childsId.push(i.id)
                     childsId.push(...reqdel(i.id))
                 }
             }
             return childsId
             }
-        const a = [foldersId, ... reqdel(foldersId)]
-        group.folders = group.folders.filter(f => !a.includes(f.id))
-        await group.save()
+        const a = [String(folderId), ... reqdel(folderId)]
+        foundGroup.folders = group.folders.filter(f => !a.includes(f.id))
+
+        foundGroup.folders=foundGroup.folders.filter(f=>!a.includes(String(i.id)))
+        await foundGroup.save()
         res.json("group delte")
     }
 

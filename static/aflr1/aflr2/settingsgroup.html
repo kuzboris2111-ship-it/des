@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Дерево папок</title>
     <style>
+        /* ===== ТВОИ ОРИГИНАЛЬНЫЕ СТИЛИ (НЕ ТРОГАЮ) ===== */
         .folder {
             margin-left: 20px;
         }
@@ -31,33 +32,170 @@
             padding: 5px;
         }
         .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
-}
-    </style>
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+        }
 
+        /* ===== ДОБАВЛЕННЫЕ СТИЛИ ПОВЕРХ (ЧЁРНЫЙ ФОН + КРАСИВЫЕ КНОПКИ) ===== */
+        body {
+            background: #000000 !important;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Главный контейнер — выравнивание по центру */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 28px;
+            letter-spacing: -0.3px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* Область дерева — тёмная карточка */
+        #tree-container {
+            background: #0f0f0f;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 24px;
+            border: 1px solid #2a2a2a;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        /* Текст папок — светлый */
+        .folder-header {
+            color: #e0e0e0;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .folder-header:hover {
+            color: #ffffff;
+            text-shadow: 0 0 4px rgba(255,255,255,0.3);
+        }
+
+        /* КНОПКИ — ЖИВЫЕ, КРАСИВЫЕ */
+        button {
+            background: linear-gradient(105deg, #ffffff 0%, #f0f0f0 100%);
+            border: none;
+            border-radius: 30px;
+            padding: 8px 20px;
+            font-weight: 600;
+            font-size: 14px;
+            color: #000000;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(105deg, #ffffff 0%, #ffffff 100%);
+            box-shadow: 0 6px 14px rgba(255,255,255,0.2);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        /* Кнопка Create Group — чуть прозрачная, но стильная */
+        #creator {
+            background: transparent;
+            border: 1px solid #3a3a3a;
+            color: #dddddd;
+            box-shadow: none;
+            margin-top: 8px;
+        }
+
+        #creator:hover {
+            background: #1a1a1a;
+            border-color: #ffffff;
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        /* Модальное окно — круче, со стеклом */
+        #myModal {
+            background: rgba(20, 20, 20, 0.98);
+            backdrop-filter: blur(12px);
+            border: 1px solid #333;
+            border-radius: 28px;
+            box-shadow: 0 20px 35px -10px black;
+        }
+
+        #myModal input {
+            background: #1e1e1e;
+            border: 1px solid #3a3a3a;
+            border-radius: 24px;
+            color: white;
+            padding: 10px 16px;
+        }
+
+        #myModal button {
+            background: white;
+            color: black;
+            padding: 8px 20px;
+        }
+
+        /* Контекстное меню — тёмное, стильное */
+        #folderMenu {
+            background: #121212;
+            backdrop-filter: blur(12px);
+            border: 1px solid #2a2a2a;
+            border-radius: 20px;
+            padding: 6px;
+        }
+
+        #folderMenu button {
+            background: transparent;
+            color: #ddd;
+            box-shadow: none;
+            text-align: left;
+            border-radius: 14px;
+        }
+
+        #folderMenu button:hover {
+            background: #252525;
+            color: white;
+            transform: none;
+        }
+    </style>
 </head>
 <body>
-    <h2>Мои папки</h2>
+    <h2>📁 Мои папки</h2>
     <div id="tree-container"></div>
-<div id="folderMenu" style="display: none; position: absolute; background: white; border: 1px solid #ccc;">
-    <button id="addFolderBtn">+ Добавить папку</button>
-    <button id="deleteFolderBtn">🗑 Удалить</button>
-    <button id="renameFolderBtn">✏️ Переименовать</button>
-</div>
 
-<div id="myModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border:1px solid black; z-index:1000;">
-    <form id="addForm">
-    <input type="text" id="folder-name" placeholder="Название" required>
-    <button type="submit">+Add</button>
-    </form>
-</div>
+    <div id="folderMenu" style="display: none; position: absolute; background: white; border: 1px solid #ccc;">
+        <button id="addFolderBtn">+ Добавить папку</button>
+        <button id="deleteFolderBtn">🗑 Удалить</button>
+        <button id="renameFolderBtn">✏️ Переименовать</button>
+    </div>
+
+    <div id="myModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:white; padding:20px; border:1px solid black; z-index:1000;">
+        <form id="addForm">
+            <input type="text" id="folder-name" placeholder="Название" required>
+            <button type="submit">+Add</button>
+        </form>
+    </div>
+
     <button id="creator" style="margin:20px" type="button">Create Group</button>
+
     <script src="/static/js/settings.js"></script>
 </body>
 </html>

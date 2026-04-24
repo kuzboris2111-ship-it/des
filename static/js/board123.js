@@ -70,8 +70,9 @@ const socket = io()
 const currentFolderId = localStorage.getItem('currentFolderId')
 socket.emit('join-group', `${groupId}_${currentFolderId}`)
 socket.on('draw', (data) => {
-
-    ctx.lineTo(data.x, data.y)
+    ctx.beginPath();
+    ctx.moveTo(data.from.x, data.from.y)
+    ctx.lineTo(data.to.x, data.to.y)
     ctx.stroke()
 })
 

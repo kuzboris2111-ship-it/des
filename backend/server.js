@@ -3,7 +3,7 @@ const path = require('path')
 const mongoose=require('mongoose')
 const authRouter=require('./authRouter')
 const groupRouter=require("./groupRouter")
-
+const multer = require('multer')
 const app = express()
 const server = require('http').createServer(app)
 const io = require('socket.io')(server)
@@ -26,12 +26,13 @@ io.on('connection', (socket) => {
     })
 
     socket.on('draw', (data) => {
-        socket.to(data.groupId).emit('draw', data)
+        socket.to(`${data.groupId}_${data.folderId}`).emit('draw', data)
     })
     socket.on('chat-message', async (data) => {
         io.to(`${data.groupId}_${data.folderId}`).emit('chat-message', data)
     })
 })
+
 
 //-------------------------------------------------------
 const start=async()=>{
