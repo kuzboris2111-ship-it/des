@@ -119,7 +119,7 @@ class groupController{
         }
     }
     async deleteFolders(req, res){
-        const {groupId, foldersId}=req.body
+        const {groupId, folderId}=req.body
         const foundGroup=await group.findById(groupId)
             if (!foundGroup) return res.status(404).json({ message: 'Группа не найдена' })
 
@@ -134,9 +134,8 @@ class groupController{
             return childsId
             }
         const a = [String(folderId), ... reqdel(folderId)]
-        foundGroup.folders = group.folders.filter(f => !a.includes(f.id))
+        foundGroup.folders = foundGroup.folders.filter(f => !a.includes(f.id))
 
-        foundGroup.folders=foundGroup.folders.filter(f=>!a.includes(String(i.id)))
         await foundGroup.save()
         res.json("group delte")
     }

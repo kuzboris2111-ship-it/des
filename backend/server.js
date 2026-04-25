@@ -24,12 +24,10 @@ io.on('connection', (socket) => {
     })
 
     socket.on('draw', (data) => {
-        console.log('📥 Сервер получил draw:', data)
         socket.to(`${data.groupId}_${data.folderId}`).emit('draw', data)
     })
 
     socket.on('chat-message', async (data) => {
-        console.log('💬 Сервер получил chat:', data)
         io.to(`${data.groupId}_${data.folderId}`).emit('chat-message', data)
     })
 })

@@ -7,8 +7,13 @@ canvas.addEventListener('click', (event) => {
 
 
 export function initBoard(canvas, groupId) {
-
-
+let currentColor = 'black'
+document.querySelectorAll('.color-btn').forEach(btn => {
+    btn.onclick = () => {
+        currentColor = btn.dataset.color
+        ctx.strokeStyle = currentColor
+    }
+})
 async function loadChatHistory() {
     const res = await fetch(`/groups/chat/${groupId}/${localStorage.getItem('currentFolderId')}`)
     const data = await res.json()
@@ -225,6 +230,7 @@ function draw() {
         ctx.fillStyle = 'orange'
         ctx.fillRect(i,j, 1,1)
     }}
+    ctx.strokeStyle = currentColor
     for (let i=0; i<lines.length; i++){
         let line=lines[i]
         const points = line.points
