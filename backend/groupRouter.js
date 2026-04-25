@@ -3,6 +3,20 @@
     const router = express.Router();
     const groupContrl=require('./groupController')
     const {check}=require('express-validator')
+    const multer = require('multer')
+    const path=require('path')
+//---------------------------------------
+        const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+        cb(null, 'uploads/')
+    },
+        filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+    })
+//-------------------------------------------
+const upload = multer({ storage })
+router.post('/upload', upload.single('file'), groupContrl.uploadFile)
 
     router.post('/registration', [
         check('groupname', 'groupname is empty').notEmpty(),
@@ -24,4 +38,5 @@
 
     router.post('/chat/message', groupContrl.addMessage)
     router.get('/chat/:groupId/:folderId', groupContrl.getMessage)
+
     module.exports=router

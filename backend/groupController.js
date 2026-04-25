@@ -189,7 +189,7 @@ class groupController{
             $push: {
                 message: { text, username, fileUrl, fileName, createdAt: new Date() }
             }},
-            { upsert: true, new: true }
+            { upsert: true, returnDocument: 'after'}
 
         )
         res.json({message:"Message append"});
@@ -211,6 +211,23 @@ class groupController{
                         res.status(400).json({ message: "Error" })
 
         }
+}
+async uploadFile(req, res) {
+try {
+const file = req.file
+
+if (!file) {
+return res.status(400).json({ message: 'Файл не загружен' })
+}
+
+res.json({
+fileUrl: `/uploads/${file.filename}`,
+fileName: file.originalname
+})
+
+} catch (e) {
+res.status(500).json({ message: 'Ошибка загрузки файла' })
+}
 }
 }
 

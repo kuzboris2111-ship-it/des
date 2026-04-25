@@ -18,6 +18,7 @@ async function loadChatHistory() {
         du.innerHTML = `<b>${msg.username}:</b> ${msg.text}`
         if (msg.fileUrl) du.innerHTML += ` <a href="${msg.fileUrl}">📎 ${msg.fileName}</a>`
         chatMessages.appendChild(du)
+
     })
 }
 //---------------------
@@ -67,12 +68,15 @@ function clearCanvas(){
     ctx.clearRect(0,0, canvas.width, canvas.height)
 }
 const socket = io()
-const currentFolderId = localStorage.getItem('currentFolderId')
+socket.on('connect', () => console.log('✅ Сокет подключён'))
+socket.on('disconnect', () => console.log('❌ Сокет отключён'))
+socket.on('connect_error', (err) => console.log('❌ Ошибка подключения:', err))
+
 socket.emit('join-group', `${groupId}_${currentFolderId}`)
 socket.on('draw', (data) => {
     ctx.beginPath();
     ctx.moveTo(data.from.x, data.from.y)
-    ctx.lineTo(data.to.x, data.to.y)
+    ctx.lineTo(data.x, data.y)
     ctx.stroke()
 })
 
@@ -142,27 +146,35 @@ canvas.addEventListener('mousedown', (e) => {
     }
     })
 
-canvas.addEventListener('mousemove', (e)=>{
-    if(movement && flag){
-    secX=e.clientX-mosX
-    secY=e.clientY-mosY
+canvas.addEventListener('mousemove', (e) => {
+    if (movement && flag) {
+        secX = e.clientX - mosX
+        secY = e.clientY - mosY
+        genX = startGenX + secX
+        genY = startGenY + secY
+        draw()
+    } else if (painting && !flag) {
+        const rect = canvas.getBoundingClientRect()
+        const x = e.clientX - rect.left
+        const y = e.clientY - rect.top
+        ctx.lineTo(x, y)
+        thilines.push({ x, y })
+        ctx.stroke()
 
-    genX=startGenX+secX
-    genY=startGenY+secY
-    draw()
-}
-    else if (painting && !flag){
-    const rect = canvas.getBoundingClientRect()
-    const x = (e.clientX-rect.left)
-    const y = e.clientY-rect.top
-    ctx.lineTo(x, y)
-    thilines.push({ x, y })
-    socket.emit('draw', {groupId, x,y})
-    draw()
-
-}
-
-    })
+        // Отправка через сокет (только если есть минимум 2 точки)
+        if (thilines.length >= 2) {
+            const fromPoint = thilines[thilines.length - 2]
+            const toPoint = { x, y }
+            socket.emit('draw', {
+                groupId: groupId,
+                folderId: localStorage.getItem('currentFolderId'),
+                from: fromPoint,
+                to: toPoint
+            })
+        }
+        draw()
+    }
+})
 canvas.addEventListener('mouseup', (e)=>{
     if(movement && flag){
     movement=false
@@ -274,7 +286,7 @@ chatFile.onchange= async ()=>{
     if(!file) return
     const formData= new FormData()
     formData.append('file', file)
-    const res = await fetch('/upload', {
+    const res = await fetch('/groups/upload', {
         method: 'POST',
         body: formData
     })
@@ -285,7 +297,7 @@ chatFile.onchange= async ()=>{
 
 add.addEventListener('click', ()=>{
     const text=chatInput.value
-    if(!text) return
+    if(!text && !pendingFile) return
     console.log('Клик по кнопке отправки', text)
     const messageDate={groupId: groupId,
                 folderId: localStorage.getItem('currentFolderId'),
