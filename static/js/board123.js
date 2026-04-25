@@ -68,16 +68,21 @@ function clearCanvas(){
     ctx.clearRect(0,0, canvas.width, canvas.height)
 }
 const socket = io()
-socket.on('connect', () => console.log('✅ Сокет подключён'))
-socket.on('disconnect', () => console.log('❌ Сокет отключён'))
-socket.on('connect_error', (err) => console.log('❌ Ошибка подключения:', err))
 
-socket.emit('join-group', `${groupId}_${currentFolderId}`)
+
+socket.emit('join-group', {
+    groupId: groupId,
+    folderId: localStorage.getItem('currentFolderId')
+})
 socket.on('draw', (data) => {
-    ctx.beginPath();
-    ctx.moveTo(data.from.x, data.from.y)
-    ctx.lineTo(data.x, data.y)
-    ctx.stroke()
+    if (!data.from || !data.to) return
+
+    lines.push({
+        points: [data.from, data.to],
+        lineId: 'socket_' + Date.now()
+    })
+
+    draw()
 })
 
 
